@@ -25,12 +25,16 @@ fetch('http://www.nationalarchives.gov.uk/help-with-your-research/research-guide
             const guide = {};
 
             guide.title = first_link.textContent;
-            guide.href = first_link.href;
+
+            // This Regex returns whatever is followed by a '/', any number of
+            // characters, and a final '/'
+
+            const matcher = /.*(?=\/[^\/]*\/)/;
+
+            guide.href = first_link.href.replace(matcher, '');
             guide.tags = [];
 
-            Array.prototype.forEach.call(tags, (tag) => {
-                guide.tags.push(tag.textContent);
-            });
+            Array.prototype.forEach.call(tags, (tag) => guide.tags.push(tag.textContent));
 
             guides.push(guide);
 
